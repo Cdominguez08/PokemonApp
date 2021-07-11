@@ -28,13 +28,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:minHeight="200dp"
+                android:visibility="gone"
                 tools:srcCompat="@drawable/item_pokemon_sample" />
 
             <TextView
                 android:id="@+id/tvName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
                 android:textColor="@color/black"
                 android:textSize="24sp"

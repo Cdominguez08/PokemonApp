@@ -18,8 +18,8 @@ class PokemonRecyclerViewAdapter :
         val ivImage = itemView.findViewById<ImageView>(R.id.ivImage)
         val tvName = itemView.findViewById<TextView>(R.id.tvName)
 
-        fun updateUI(pokemon: Pokemon){
-            tvName.text = pokemon.name
+        fun updateUI(pokemon: Pokemon, position: Int){
+            tvName.text = "$position. ${pokemon.name}"
             Picasso.get().load(pokemon.imageUrl)
                 .placeholder(R.drawable.ic_baseline_image_24)
                 .error(R.drawable.ic_baseline_broken_image_24)
@@ -33,7 +33,7 @@ class PokemonRecyclerViewAdapter :
     }
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        holder.updateUI(list.elementAt(position))
+        holder.updateUI(list.elementAt(position), position+1)
     }
 
     override fun getItemCount(): Int {
@@ -41,7 +41,6 @@ class PokemonRecyclerViewAdapter :
     }
 
     fun updatePokemonList(updateList : List<Pokemon>){
-        list.clear()
         list.addAll(updateList)
         notifyDataSetChanged()
     }
