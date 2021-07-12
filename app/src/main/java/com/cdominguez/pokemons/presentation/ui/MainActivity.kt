@@ -2,14 +2,13 @@ package com.cdominguez.pokemons.presentation.ui
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cdominguez.domain.FindAllPokemons
 import com.cdominguez.domain.Pokemon
-import com.cdominguez.pokemons.PokemonRecyclerViewAdapter
+import com.cdominguez.pokemons.presentation.adapters.PokemonRecyclerViewAdapter
 import com.cdominguez.pokemons.R
 import com.cdominguez.pokemons.data.local.AppDatabase
 import com.cdominguez.pokemons.data.local.LocalDataSource
@@ -87,8 +86,6 @@ class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonIt
         binding.rvPokemonList.adapter = adapter
         binding.rvPokemonList.addOnScrollListener(onScrollListener)
         binding.rvPokemonList.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-
-        //adapter.updatePokemonList(pokemonList)
 
         viewModel.findAllPokemons()
 

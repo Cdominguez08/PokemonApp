@@ -2,6 +2,6 @@ package com.cdominguez.pokemons.data.network.entities
 
 import com.google.gson.annotations.SerializedName
 
-data class Sprites(
+data class SpritesResponse(
     @SerializedName("other") val other : OtherResponse
 )

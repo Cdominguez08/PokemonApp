@@ -3,11 +3,10 @@ package com.cdominguez.pokemons.presentation.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cdominguez.domain.FindAllFavoritePokemons
 import com.cdominguez.domain.Pokemon
-import com.cdominguez.pokemons.PokemonRecyclerViewAdapter
+import com.cdominguez.pokemons.presentation.adapters.PokemonRecyclerViewAdapter
 import com.cdominguez.pokemons.data.local.AppDatabase
 import com.cdominguez.pokemons.data.local.LocalDataSource
 import com.cdominguez.pokemons.data.local.PokemonRoomDataSource
@@ -62,9 +61,6 @@ class PokemonsFavoritesActivity : AppCompatActivity(), PokemonRecyclerViewAdapte
 
         viewModel.favoritePokemons
             .observe(this,{
-
-                Log.i("POKEMONS_FAVS","pokemos list favs ${it.size}")
-
                 adapter.clearList()
                 adapter.updatePokemonList(it)
             })

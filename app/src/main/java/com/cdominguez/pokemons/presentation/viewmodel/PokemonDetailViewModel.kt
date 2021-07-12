@@ -33,7 +33,6 @@ class PokemonDetailViewModel(
                 _pokemonDetail.value = pokemonDetailResponse
             }catch (e: Throwable){
 
-                Log.i("PokemonDetail","Error en obtener pokemon detail ${e.localizedMessage}")
                 _showProgressBar.value = false
             }finally {
 

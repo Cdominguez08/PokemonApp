@@ -14,7 +14,7 @@ fun PokemonResponse.toPokemon() = Pokemon(
 fun PokemonDetailResponse.toPokemonDetail() = PokemonDetail(
     id,
     name,
-    sprites.other.officialArtWork.imageUrl ?: "",
+    spritesResponse.other.officialArtWork.imageUrl ?: "",
     height,
     weight,
     detailUrl ?: ""
