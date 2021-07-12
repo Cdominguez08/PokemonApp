@@ -6,12 +6,15 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvItemContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,14 +25,6 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/ivImage"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:minHeight="200dp"
-                android:visibility="gone"
-                tools:srcCompat="@drawable/item_pokemon_sample" />
 
             <TextView
                 android:id="@+id/tvName"
@@ -44,7 +39,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivImage"
                 app:layout_constraintVertical_bias="0.0"
                 tools:text="Bulbasour" />
         </LinearLayout>

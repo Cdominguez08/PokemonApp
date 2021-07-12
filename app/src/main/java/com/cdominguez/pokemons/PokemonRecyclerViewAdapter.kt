@@ -5,25 +5,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.cdominguez.domain.Pokemon
 import com.squareup.picasso.Picasso
 
-class PokemonRecyclerViewAdapter :
+class PokemonRecyclerViewAdapter(
+    val onPokemonItemListener: OnPokemonItemListener
+) :
     RecyclerView.Adapter<PokemonRecyclerViewAdapter.PokemonViewHolder>() {
 
     val list = mutableListOf<Pokemon>()
 
     inner class PokemonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivImage = itemView.findViewById<ImageView>(R.id.ivImage)
+
         val tvName = itemView.findViewById<TextView>(R.id.tvName)
+        val cvItemContainer = itemView.findViewById<CardView>(R.id.cvItemContainer)
 
         fun updateUI(pokemon: Pokemon, position: Int){
             tvName.text = "$position. ${pokemon.name}"
-            Picasso.get().load(pokemon.imageUrl)
-                .placeholder(R.drawable.ic_baseline_image_24)
-                .error(R.drawable.ic_baseline_broken_image_24)
-                .into(ivImage)
+            cvItemContainer.setOnClickListener {
+                onPokemonItemListener.onItemClick(pokemon)
+            }
         }
     }
 
@@ -43,5 +46,9 @@ class PokemonRecyclerViewAdapter :
     fun updatePokemonList(updateList : List<Pokemon>){
         list.addAll(updateList)
         notifyDataSetChanged()
+    }
+
+    interface OnPokemonItemListener{
+        fun onItemClick(pokemon: Pokemon)
     }
 }

@@ -1,8 +1,8 @@
 package com.cdominguez.pokemons.presentation.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cdominguez.domain.FindAllPokemons
@@ -16,7 +16,7 @@ import com.cdominguez.pokemons.databinding.ActivityMainBinding
 import com.cdominguez.pokemons.presentation.viewmodel.MainViewModel
 import com.cdominguez.pokemons.utils.getViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonItemListener {
 
     private lateinit var binding : ActivityMainBinding
 
@@ -63,17 +63,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val pokemonList = mutableListOf<Pokemon>()
-//
-//        val pokemon1 = Pokemon(name = "bulbasaur", imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png")
-//        val pokemon2 = Pokemon(name = "ivysaur", imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png")
-//        val pokemon3 = Pokemon(name = "venusaur", imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png")
-//
-//        pokemonList.add(pokemon1)
-//        pokemonList.add(pokemon2)
-//        pokemonList.add(pokemon3)
-
-        val adapter = PokemonRecyclerViewAdapter()
+        val adapter = PokemonRecyclerViewAdapter(this)
 
         binding.rvPokemonList.adapter = adapter
         binding.rvPokemonList.addOnScrollListener(onScrollListener)
@@ -88,5 +78,11 @@ class MainActivity : AppCompatActivity() {
                 adapter.updatePokemonList(it)
             }
         })
+    }
+
+    override fun onItemClick(pokemon: Pokemon) {
+        val intent = Intent(this, PokemonDetailActivity::class.java)
+        intent.putExtra(PokemonDetailActivity.POKEMON_DETAIL_URL,pokemon.detailUrl)
+        startActivity(intent)
     }
 }
