@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.cdominguez.domain.FindPokemonDetail
-import com.cdominguez.domain.PokemonDetail
+import com.cdominguez.domain.*
 import com.cdominguez.pokemons.R
+import com.cdominguez.pokemons.data.local.AppDatabase
+import com.cdominguez.pokemons.data.local.LocalDataSource
+import com.cdominguez.pokemons.data.local.PokemonRoomDataSource
 import com.cdominguez.pokemons.data.network.PokemonRepository
 import com.cdominguez.pokemons.data.network.PokemonRequest
 import com.cdominguez.pokemons.data.network.PokemonRequest.Companion.baseUrl
@@ -33,19 +35,42 @@ class PokemonDetailActivity : AppCompatActivity() {
         PokemonRetrofitDataSource(pokemonRequest)
     }
 
+    private val localDataSource : LocalDataSource by lazy {
+        PokemonRoomDataSource(AppDatabase.getDatabase(applicationContext))
+    }
+
     private val pokemonRepository : PokemonRepository by lazy {
-        PokemonRepository(remoteDataSource)
+        PokemonRepository(remoteDataSource,localDataSource)
     }
 
     private val findPokemonDetail : FindPokemonDetail by lazy {
         FindPokemonDetail(pokemonRepository)
     }
 
+    private val addPokemonToFavorite : AddPokemonToFavorite by lazy{
+        AddPokemonToFavorite(pokemonRepository)
+    }
+
+    private val removePokemonToFavorite: RemovePokemonToFavorite by lazy{
+        RemovePokemonToFavorite(pokemonRepository)
+    }
+
+    private val findPokemonById : FindPokemonById by lazy{
+        FindPokemonById(pokemonRepository)
+    }
+
     private val viewModel : PokemonDetailViewModel by lazy {
         getViewModel {
-            PokemonDetailViewModel(findPokemonDetail)
+            PokemonDetailViewModel(
+                findPokemonDetail,
+                addPokemonToFavorite,
+                removePokemonToFavorite,
+                findPokemonById
+            )
         }
     }
+
+    private var isFavoritePokemon = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +84,8 @@ class PokemonDetailActivity : AppCompatActivity() {
         viewModel.pokemonDetail.observe(this, {
             it?.let {
                 pokemonDetail = it
+                viewModel.findPokemonById(pokemonDetail.id)
+
                 loadImage(it.imageUrl)
                 binding.tvNameDetail.text = it.name
             }
@@ -73,8 +100,25 @@ class PokemonDetailActivity : AppCompatActivity() {
         })
 
         binding.fbFavorite.setOnClickListener{
-            viewModel.addPokemonToFavorite(pokemonDetail)
+
+            if(isFavoritePokemon){
+                viewModel.removePokemonToFavorite(pokemonDetail)
+            }else {
+
+                viewModel.addPokemonToFavorite(pokemonDetail)
+            }
         }
+
+        viewModel.isPokemonFavorite.observe(this,{
+
+            isFavoritePokemon = it
+
+            if(it){
+                binding.fbFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            }else{
+                binding.fbFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+        })
     }
 
     fun loadImage(imageUrl : String?){

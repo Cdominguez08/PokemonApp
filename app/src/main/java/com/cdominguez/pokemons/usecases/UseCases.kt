@@ -17,5 +17,23 @@ class FindPokemonDetail(
 class AddPokemonToFavorite(
     private val pokemonRepositoy: PokemonRepository
 ){
-    fun invoke(pokemonDetail: PokemonDetail) = pokemonRepositoy.addPokemonToFavorite(pokemonDetail)
+    suspend fun invoke(pokemonDetail: PokemonDetail) = pokemonRepositoy.addPokemonToFavorite(pokemonDetail)
+}
+
+class RemovePokemonToFavorite(
+    private val pokemonRepositoy: PokemonRepository
+){
+    suspend fun invoke(pokemonDetail: PokemonDetail) = pokemonRepositoy.removePokemonToFavorite(pokemonDetail)
+}
+
+class FindAllFavoritePokemons(
+    val pokemonRepositoy: PokemonRepository
+){
+    suspend fun invoke() = pokemonRepositoy.findAllFavoritePokemon()
+}
+
+class FindPokemonById(
+    val pokemonRepositoy: PokemonRepository
+){
+    suspend fun invoke(pokemonId: Long) = pokemonRepositoy.findPokemonById(pokemonId)
 }

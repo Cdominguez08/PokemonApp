@@ -5,14 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cdominguez.domain.AddPokemonToFavorite
-import com.cdominguez.domain.FindPokemonDetail
-import com.cdominguez.domain.PokemonDetail
+import com.cdominguez.domain.*
 import kotlinx.coroutines.launch
 
 class PokemonDetailViewModel(
     private val findPokemonDetail: FindPokemonDetail,
-    private val addPokemonToFavorite: AddPokemonToFavorite
+    private val addPokemonToFavorite: AddPokemonToFavorite,
+    private val removePokemonToFavorite: RemovePokemonToFavorite,
+    private val findPokemonById: FindPokemonById
 ) : ViewModel() {
 
     private val _pokemonDetail = MutableLiveData<PokemonDetail>()
@@ -20,6 +20,9 @@ class PokemonDetailViewModel(
 
     private val _showProgressBar = MutableLiveData<Boolean>()
     val showProgressBar : LiveData<Boolean> get() = _showProgressBar
+
+    private val _isPokemonFavorite = MutableLiveData<Boolean>()
+    val isPokemonFavorite : LiveData<Boolean> get() = _isPokemonFavorite
 
     fun findPokemonDetail(url : String?){
         viewModelScope.launch {
@@ -40,6 +43,33 @@ class PokemonDetailViewModel(
     }
 
     fun addPokemonToFavorite(pokemonDetail: PokemonDetail) {
-        addPokemonToFavorite.invoke(pokemonDetail)
+        viewModelScope.launch {
+            addPokemonToFavorite.invoke(pokemonDetail)
+            _isPokemonFavorite.value = true
+        }
+    }
+
+    fun removePokemonToFavorite(pokemonDetail: PokemonDetail){
+        viewModelScope.launch {
+            removePokemonToFavorite.invoke(pokemonDetail)
+            _isPokemonFavorite.value = false
+        }
+    }
+
+    fun findPokemonById(pokemonId: Long){
+
+        viewModelScope.launch {
+            val pokemon : PokemonDetail? = try{
+                findPokemonById.invoke(pokemonId)
+            }catch (e: Throwable){
+                null
+            }
+
+            if(pokemon != null){
+                _isPokemonFavorite.value = true
+            }else{
+                _isPokemonFavorite.value = false
+            }
+        }
     }
 }

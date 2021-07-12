@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cdominguez.domain.FindAllPokemons
 import com.cdominguez.domain.Pokemon
 import com.cdominguez.pokemons.PokemonRecyclerViewAdapter
+import com.cdominguez.pokemons.data.local.AppDatabase
+import com.cdominguez.pokemons.data.local.LocalDataSource
+import com.cdominguez.pokemons.data.local.PokemonRoomDataSource
 import com.cdominguez.pokemons.data.network.PokemonRepository
 import com.cdominguez.pokemons.data.network.PokemonRequest
 import com.cdominguez.pokemons.data.network.PokemonRetrofitDataSource
@@ -28,8 +31,12 @@ class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonIt
         PokemonRetrofitDataSource(pokemonRequest)
     }
 
+    private val pokemonRoomDataSource : LocalDataSource by lazy {
+        PokemonRoomDataSource(AppDatabase.getDatabase(applicationContext))
+    }
+
     private val pokemonRepository : PokemonRepository by lazy {
-        PokemonRepository(pokemonRemoteDataSource)
+        PokemonRepository(pokemonRemoteDataSource,pokemonRoomDataSource)
     }
 
     private val findAllPokemons : FindAllPokemons by lazy {
