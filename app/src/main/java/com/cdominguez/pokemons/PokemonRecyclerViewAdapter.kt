@@ -48,6 +48,11 @@ class PokemonRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
+    fun clearList() {
+        list.clear()
+        notifyDataSetChanged()
+    }
+
     interface OnPokemonItemListener{
         fun onItemClick(pokemon: Pokemon)
     }

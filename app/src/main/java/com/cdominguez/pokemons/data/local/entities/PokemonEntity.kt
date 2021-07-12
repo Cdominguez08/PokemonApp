@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 data class PokemonEntity(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "name") val name : String,
-    @ColumnInfo(name = "image_url") val imageUrl : String?,
+    @ColumnInfo(name = "image_url") val imageUrl : String,
     @ColumnInfo(name = "height") val height : Int,
-    @ColumnInfo(name = "weight") val weight : Int
+    @ColumnInfo(name = "weight") val weight : Int,
+    @ColumnInfo(name = "detail_url") val detailUrl: String
 )

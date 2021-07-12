@@ -11,7 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pokemons">
-        <activity android:name=".presentation.ui.PokemonDetailActivity"></activity>
+        <activity android:name=".presentation.ui.SplashscreenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Pokemons.NoActionBar"></activity>
+        <activity android:name=".presentation.ui.PokemonsFavoritesActivity" />
+        <activity android:name=".presentation.ui.PokemonDetailActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".presentation.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

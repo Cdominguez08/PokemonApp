@@ -9,6 +9,8 @@ import com.cdominguez.pokemons.data.network.toPokemonEntity
 import io.reactivex.Flowable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class PokemonRoomDataSource(
@@ -19,7 +21,7 @@ class PokemonRoomDataSource(
         database.pokemonDao()
     }
 
-    override suspend fun findAllFavoritePokemons(): Flowable<List<PokemonDetail>> {
+    override fun findAllFavoritePokemons(): Flow<List<Pokemon>> {
         return pokemonDao
             .findAllPokemons()
             .map(List<PokemonEntity>::toPokemonDomainList)

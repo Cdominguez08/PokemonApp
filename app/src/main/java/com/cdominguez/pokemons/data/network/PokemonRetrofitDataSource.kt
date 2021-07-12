@@ -29,6 +29,7 @@ class PokemonRetrofitDataSource(
             throw e
         }
 
+        pokemonDetail.detailUrl = url
         pokemonDetail.toPokemonDetail()
     }
 }

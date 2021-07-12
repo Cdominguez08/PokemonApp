@@ -1,6 +1,8 @@
 package com.cdominguez.pokemons.presentation.ui
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -8,15 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cdominguez.domain.FindAllPokemons
 import com.cdominguez.domain.Pokemon
 import com.cdominguez.pokemons.PokemonRecyclerViewAdapter
+import com.cdominguez.pokemons.R
 import com.cdominguez.pokemons.data.local.AppDatabase
 import com.cdominguez.pokemons.data.local.LocalDataSource
 import com.cdominguez.pokemons.data.local.PokemonRoomDataSource
-import com.cdominguez.pokemons.data.network.PokemonRepository
+import com.cdominguez.pokemons.data.PokemonRepository
 import com.cdominguez.pokemons.data.network.PokemonRequest
 import com.cdominguez.pokemons.data.network.PokemonRetrofitDataSource
 import com.cdominguez.pokemons.data.network.RemoteDataSource
 import com.cdominguez.pokemons.databinding.ActivityMainBinding
 import com.cdominguez.pokemons.presentation.viewmodel.MainViewModel
+import com.cdominguez.pokemons.utils.Constants
 import com.cdominguez.pokemons.utils.getViewModel
 
 class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonItemListener {
@@ -67,6 +71,14 @@ class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val sharedPreferences = getSharedPreferences(getString(R.string.sharedPreferences), Context.MODE_PRIVATE)
+
+
+        if(!sharedPreferences.contains(Constants.SHOW_SPLASHSCREEN)){
+            goToSplashscreen()
+            return
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -85,11 +97,24 @@ class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonIt
                 adapter.updatePokemonList(it)
             }
         })
+
+        binding.fbPokemonFavorite.setOnClickListener {
+            goToPokemonFavoriteActivity()
+        }
     }
 
     override fun onItemClick(pokemon: Pokemon) {
         val intent = Intent(this, PokemonDetailActivity::class.java)
         intent.putExtra(PokemonDetailActivity.POKEMON_DETAIL_URL,pokemon.detailUrl)
         startActivity(intent)
+    }
+
+    fun goToPokemonFavoriteActivity(){
+        startActivity(Intent(this,PokemonsFavoritesActivity::class.java))
+    }
+
+    fun goToSplashscreen(){
+        startActivity(Intent(this,SplashscreenActivity::class.java))
+        finish()
     }
 }

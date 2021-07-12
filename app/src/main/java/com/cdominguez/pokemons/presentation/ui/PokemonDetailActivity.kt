@@ -3,15 +3,12 @@ package com.cdominguez.pokemons.presentation.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import com.cdominguez.domain.*
 import com.cdominguez.pokemons.R
 import com.cdominguez.pokemons.data.local.AppDatabase
 import com.cdominguez.pokemons.data.local.LocalDataSource
 import com.cdominguez.pokemons.data.local.PokemonRoomDataSource
-import com.cdominguez.pokemons.data.network.PokemonRepository
+import com.cdominguez.pokemons.data.PokemonRepository
 import com.cdominguez.pokemons.data.network.PokemonRequest
 import com.cdominguez.pokemons.data.network.PokemonRequest.Companion.baseUrl
 import com.cdominguez.pokemons.data.network.PokemonRetrofitDataSource
@@ -19,7 +16,6 @@ import com.cdominguez.pokemons.data.network.RemoteDataSource
 import com.cdominguez.pokemons.databinding.ActivityPokemonDetailBinding
 import com.cdominguez.pokemons.presentation.viewmodel.PokemonDetailViewModel
 import com.cdominguez.pokemons.utils.getViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 
 class PokemonDetailActivity : AppCompatActivity() {
@@ -76,6 +72,8 @@ class PokemonDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPokemonDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.title = "Detalle del Pokemon"
 
         val pokemonDetailUrl = intent.getStringExtra(POKEMON_DETAIL_URL)
 

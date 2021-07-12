@@ -1,9 +1,10 @@
-package com.cdominguez.pokemons.data.network
+package com.cdominguez.pokemons.data
 
 import com.cdominguez.domain.Pokemon
 import com.cdominguez.domain.PokemonDetail
 import com.cdominguez.pokemons.data.local.LocalDataSource
-import io.reactivex.Flowable
+import com.cdominguez.pokemons.data.network.RemoteDataSource
+import kotlinx.coroutines.flow.Flow
 
 class PokemonRepository(
     private val remoteDataSource: RemoteDataSource,
@@ -26,7 +27,7 @@ class PokemonRepository(
         localDataSource.removePokemonToFavorite(pokemonDetail)
     }
 
-    suspend fun findAllFavoritePokemon() : Flowable<List<PokemonDetail>>{
+    fun findAllFavoritePokemon() : Flow<List<Pokemon>>{
         return localDataSource.findAllFavoritePokemons()
     }
 

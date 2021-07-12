@@ -1,6 +1,6 @@
 package com.cdominguez.domain
 
-import com.cdominguez.pokemons.data.network.PokemonRepository
+import com.cdominguez.pokemons.data.PokemonRepository
 
 class FindAllPokemons(
     val pokemonRepositoy : PokemonRepository
@@ -29,7 +29,7 @@ class RemovePokemonToFavorite(
 class FindAllFavoritePokemons(
     val pokemonRepositoy: PokemonRepository
 ){
-    suspend fun invoke() = pokemonRepositoy.findAllFavoritePokemon()
+    fun invoke() = pokemonRepositoy.findAllFavoritePokemon()
 }
 
 class FindPokemonById(

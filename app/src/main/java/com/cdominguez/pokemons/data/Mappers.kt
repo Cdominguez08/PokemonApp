@@ -14,17 +14,10 @@ fun PokemonResponse.toPokemon() = Pokemon(
 fun PokemonDetailResponse.toPokemonDetail() = PokemonDetail(
     id,
     name,
-    sprites.other.officialArtWork.imageUrl,
+    sprites.other.officialArtWork.imageUrl ?: "",
     height,
-    weight
-)
-
-fun PokemonEntity.toPokemonDetail() = PokemonDetail(
-    id,
-    name,
-    imageUrl,
-    height,
-    weight
+    weight,
+    detailUrl ?: ""
 )
 
 fun PokemonDetail.toPokemonEntity() = PokemonEntity(
@@ -32,7 +25,23 @@ fun PokemonDetail.toPokemonEntity() = PokemonEntity(
     name,
     imageUrl,
     height,
-    weight
+    weight,
+    detailUrl
 )
 
-fun List<PokemonEntity>.toPokemonDomainList() = map(PokemonEntity::toPokemonDetail)
+fun PokemonEntity.toPokemonDetail() = PokemonDetail(
+    id,
+    name,
+    imageUrl,
+    height,
+    weight,
+    detailUrl
+)
+
+fun PokemonEntity.toPokemon() = Pokemon(
+    name,
+    detailUrl
+)
+
+fun List<PokemonEntity>.toPokemonDomainList() = map(PokemonEntity::toPokemon)
+
