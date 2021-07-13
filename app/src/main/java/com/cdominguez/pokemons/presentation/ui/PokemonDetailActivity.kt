@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.cdominguez.domain.*
+import com.cdominguez.pokemons.MyApp
 import com.cdominguez.pokemons.R
 import com.cdominguez.pokemons.data.local.AppDatabase
 import com.cdominguez.pokemons.data.local.LocalDataSource
@@ -15,6 +16,8 @@ import com.cdominguez.pokemons.data.network.PokemonRetrofitDataSource
 import com.cdominguez.pokemons.data.network.RemoteDataSource
 import com.cdominguez.pokemons.databinding.ActivityPokemonDetailBinding
 import com.cdominguez.pokemons.presentation.viewmodel.PokemonDetailViewModel
+import com.cdominguez.pokemons.presentation.viewmodel.PokemonDetailComponent
+import com.cdominguez.pokemons.presentation.viewmodel.ViewModelModule
 import com.cdominguez.pokemons.utils.getViewModel
 import com.squareup.picasso.Picasso
 
@@ -23,46 +26,11 @@ class PokemonDetailActivity : AppCompatActivity() {
     lateinit var binding : ActivityPokemonDetailBinding
     private lateinit var pokemonDetail: PokemonDetail
 
-    private val pokemonRequest : PokemonRequest by lazy {
-        PokemonRequest()
-    }
-
-    private val remoteDataSource : RemoteDataSource by lazy {
-        PokemonRetrofitDataSource(pokemonRequest)
-    }
-
-    private val localDataSource : LocalDataSource by lazy {
-        PokemonRoomDataSource(AppDatabase.getDatabase(applicationContext))
-    }
-
-    private val pokemonRepository : PokemonRepository by lazy {
-        PokemonRepository(remoteDataSource,localDataSource)
-    }
-
-    private val findPokemonDetail : FindPokemonDetail by lazy {
-        FindPokemonDetail(pokemonRepository)
-    }
-
-    private val addPokemonToFavorite : AddPokemonToFavorite by lazy{
-        AddPokemonToFavorite(pokemonRepository)
-    }
-
-    private val removePokemonToFavorite: RemovePokemonToFavorite by lazy{
-        RemovePokemonToFavorite(pokemonRepository)
-    }
-
-    private val findPokemonById : FindPokemonById by lazy{
-        FindPokemonById(pokemonRepository)
-    }
+    private lateinit var pokemonDetailComponent: PokemonDetailComponent
 
     private val viewModel : PokemonDetailViewModel by lazy {
         getViewModel {
-            PokemonDetailViewModel(
-                findPokemonDetail,
-                addPokemonToFavorite,
-                removePokemonToFavorite,
-                findPokemonById
-            )
+            pokemonDetailComponent.pokemonDetailViewModel
         }
     }
 
@@ -74,6 +42,8 @@ class PokemonDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title = "Detalle del Pokemon"
+
+        pokemonDetailComponent = (applicationContext as MyApp).appComponent.injectPokemonDetailComponent(ViewModelModule())
 
         val pokemonDetailUrl = intent.getStringExtra(POKEMON_DETAIL_URL)
 

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cdominguez.domain.FindAllPokemons
 import com.cdominguez.domain.Pokemon
+import com.cdominguez.pokemons.MyApp
 import com.cdominguez.pokemons.presentation.adapters.PokemonRecyclerViewAdapter
 import com.cdominguez.pokemons.R
 import com.cdominguez.pokemons.data.local.AppDatabase
@@ -18,7 +19,10 @@ import com.cdominguez.pokemons.data.network.PokemonRequest
 import com.cdominguez.pokemons.data.network.PokemonRetrofitDataSource
 import com.cdominguez.pokemons.data.network.RemoteDataSource
 import com.cdominguez.pokemons.databinding.ActivityMainBinding
+import com.cdominguez.pokemons.di.PokemonsComponent
 import com.cdominguez.pokemons.presentation.viewmodel.MainViewModel
+import com.cdominguez.pokemons.presentation.viewmodel.MainComponent
+import com.cdominguez.pokemons.presentation.viewmodel.ViewModelModule
 import com.cdominguez.pokemons.utils.Constants
 import com.cdominguez.pokemons.utils.getViewModel
 
@@ -26,29 +30,11 @@ class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonIt
 
     private lateinit var binding : ActivityMainBinding
 
-    private val pokemonRequest : PokemonRequest by lazy {
-        PokemonRequest()
-    }
-
-    private val pokemonRemoteDataSource : RemoteDataSource by lazy {
-        PokemonRetrofitDataSource(pokemonRequest)
-    }
-
-    private val pokemonRoomDataSource : LocalDataSource by lazy {
-        PokemonRoomDataSource(AppDatabase.getDatabase(applicationContext))
-    }
-
-    private val pokemonRepository : PokemonRepository by lazy {
-        PokemonRepository(pokemonRemoteDataSource,pokemonRoomDataSource)
-    }
-
-    private val findAllPokemons : FindAllPokemons by lazy {
-        FindAllPokemons(pokemonRepository)
-    }
+    private lateinit var mainComponent: MainComponent
 
     private val viewModel : MainViewModel by lazy {
         getViewModel{
-            MainViewModel(findAllPokemons)
+            mainComponent.mainViewModel
         }
     }
 
@@ -72,7 +58,6 @@ class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonIt
 
         val sharedPreferences = getSharedPreferences(getString(R.string.sharedPreferences), Context.MODE_PRIVATE)
 
-
         if(!sharedPreferences.contains(Constants.SHOW_SPLASHSCREEN)){
             goToSplashscreen()
             return
@@ -80,6 +65,8 @@ class MainActivity : AppCompatActivity(), PokemonRecyclerViewAdapter.OnPokemonIt
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        mainComponent = (applicationContext as MyApp).appComponent.injectMainComponent(ViewModelModule())
 
         val adapter = PokemonRecyclerViewAdapter(this)
 
