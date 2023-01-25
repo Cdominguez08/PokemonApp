@@ -12,9 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pokemons"
         android:name=".MyApp">
-        <activity android:name=".presentation.ui.SplashscreenActivity"
+        <activity
+            android:name=".presentation.ui.SplashscreenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Pokemons.NoActionBar"></activity>
+            android:theme="@style/Theme.Pokemons.NoActionBar" />
         <activity android:name=".presentation.ui.PokemonsFavoritesActivity" />
         <activity android:name=".presentation.ui.PokemonDetailActivity"
             android:screenOrientation="portrait"/>
